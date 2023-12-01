@@ -70,7 +70,7 @@ func findFirstAndLastDigit(line string) (int, error) {
 }
 
 func main() {
-	filePath := `C:\Users\BlueShift\Documents\GitHub\advent-of-code-23\D1\Nagao\input_Nagao.txt`
+	filePath := ``
 
 	fileContent, err := readFile(filePath)
 	if err != nil {
