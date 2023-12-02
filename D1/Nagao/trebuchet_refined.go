@@ -81,7 +81,6 @@ func main() {
 	sumCalibration := 0
 	for _, line := range fileContent {
 		line_converted := replaceWordsWithNumbers(line)
-		fmt.Println((line_converted))
 		value, err := findFirstAndLastDigit(line_converted)
 		if err != nil {
 			fmt.Println("Error reading file:", err)
