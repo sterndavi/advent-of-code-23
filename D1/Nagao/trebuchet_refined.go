@@ -70,7 +70,7 @@ func findFirstAndLastDigit(line string) (int, error) {
 }
 
 func main() {
-	filePath := `C:\Users\BlueShift\Documents\GitHub\advent-of-code-23\D1\Nagao\input_Nagao.txt`
+	filePath := ``
 
 	fileContent, err := readFile(filePath)
 	if err != nil {
@@ -81,7 +81,6 @@ func main() {
 	sumCalibration := 0
 	for _, line := range fileContent {
 		line_converted := replaceWordsWithNumbers(line)
-		fmt.Println((line_converted))
 		value, err := findFirstAndLastDigit(line_converted)
 		if err != nil {
 			fmt.Println("Error reading file:", err)
