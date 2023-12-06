@@ -26,6 +26,7 @@ char *readFile(char* fileName){
 
 int myPow(int base, int power){
     int sum = 1;
+    if (power < 0) return sum; // edge case for negatives
     while (power){
         sum *= base;
         power--;
