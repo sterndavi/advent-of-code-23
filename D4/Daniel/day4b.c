@@ -41,6 +41,7 @@ int concatArray(int arr[], int count){
     for (int i = 0; i < count; i++){
         sum += *(ptr + i) * myPow(10, (count - 1 - i));
     }
+    free(arr);
     return sum;
 }
 
@@ -100,10 +101,21 @@ int getWinCount(int *winning, int *playing){
     return count;
 }
 
+int *mapCards(char *fileText){
+    char *pos = fileText;
+    int size = 1,
+        *map,
+        *ptrMap;
+    while (*pos) if (*pos++ == '\n') size++;
+    map = (int *)malloc(sizeof(int)*size), ptrMap = map;
+    while (size--) *ptrMap++ = 1;
+    return map;
+}
+
 int main(int argc, char *argv[]){
-    char *fileText;
-    int *winningNumbers, *playingNumbers, winCount;
-    int sum = 0, cardPoints, nLine = 1;
+    char *fileText, *startPos, *endPos;
+    int *winningNumbers, *playingNumbers, *map, *ptrMap, winCount = 0;
+    int sum = 0, cardPoints, nLine = 0, cardTotal = 0;
     if (argv[1]){
         fileText = readFile(argv[1]);
     }
@@ -111,18 +123,33 @@ int main(int argc, char *argv[]){
         printf("Por favor, informe um arquivo corretamente.");
         return 1;
     }
+    map = mapCards(fileText), ptrMap = map;
     while (*fileText){
-        while (!charIsNumber(*fileText++)); // go to the next number
-        fileText++; // skip this number
-        printf("Card %d: ", nLine++);
-        winningNumbers = getWinningNumbers(&fileText); // seek fileText to the playing numbers
-        playingNumbers = getPlayingNumbers(&fileText); // seek fileText to the '\n' char and add the pointer to the next line
-        cardPoints = getCardPoints(winningNumbers, playingNumbers);
-        winCount = getWinCount(winningNumbers, playingNumbers);
-        printf("%d matches, ", winCount);
-        printf("%d points!\n", cardPoints);
-        sum += cardPoints;
+        startPos = fileText;
+        for (int i = 0; i < *(map + nLine); i++){
+            fileText = startPos;
+            while (!charIsNumber(*fileText++)); // go to the next number
+            fileText++; // skip this number
+            printf("Card %d: ", nLine + 1);
+            printf("map %d, ", *ptrMap);
+            winningNumbers = getWinningNumbers(&fileText); // seek fileText to the playing numbers
+            playingNumbers = getPlayingNumbers(&fileText); // seek fileText to the '\n' char and add the pointer to the next line
+//          cardPoints = getCardPoints(winningNumbers, playingNumbers);
+            winCount = getWinCount(winningNumbers, playingNumbers);
+            for (int i = 1; i <= winCount; (*(ptrMap + i))++, i++);
+            printf("%d matches\n, ", winCount);
+//          printf("%d points!\n", cardPoints);
+            sum += cardPoints;
+            cardTotal++;
+            endPos = fileText;
+            free(winningNumbers);
+            free(playingNumbers);
+        }
+        nLine++, ptrMap++;
+        fileText = endPos;
+        winCount = 0;
     }
-    printf("Final points: %d", sum);
+    printf("Final points: %d\n", sum);
+    printf("Final cards: %d\n", cardTotal);
     return 0;
 }
