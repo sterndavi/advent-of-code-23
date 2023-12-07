@@ -68,7 +68,7 @@ func toInt(s string) int {
 }
 
 func main() {
-	filePath := `C:\Users\BlueShift\Documents\GitHub\advent-of-code-23\D2\Nagao\input_Nagao_D2.txt`
+	filePath := ``
 	sum_id := 0
 	fileContent, err := readFile(filePath)
 	if err != nil {
